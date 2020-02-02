@@ -22,11 +22,12 @@
 
 // DX11
 //*
+#include "RenderingAPIs/DX11/SPK_DX11RenderStates.cpp"
 #include "RenderingAPIs/DX11/SPK_DX11Info.cpp"
 #include "RenderingAPIs/DX11/SPK_DX11BufferHandler.cpp"
 #include "RenderingAPIs/DX11/SPK_DX11Renderer.cpp"
 #include "RenderingAPIs/DX11/SPK_DX11LineRenderer.cpp"
-#include "RenderingAPIs/DX11/SPK_DX11PointRenderer.cpp"
-#include "RenderingAPIs/DX11/SPK_DX11QuadRenderer.cpp"
-#include "RenderingAPIs/DX11/SPK_DX11LineTrailRenderer.cpp"
+//#include "RenderingAPIs/DX11/SPK_DX11PointRenderer.cpp"
+//#include "RenderingAPIs/DX11/SPK_DX11QuadRenderer.cpp"
+//#include "RenderingAPIs/DX11/SPK_DX11LineTrailRenderer.cpp"
 //*/
