@@ -75,7 +75,7 @@ void CameraClass::Render()
 
 	// Setup where the camera is looking by default.
 	lookAt.x = 0.0f;
-	lookAt.y = 0.0f;
+	lookAt.y = 0.6f;
 	lookAt.z = 1.0f;
 
 	// Set the yaw (Y axis), pitch (X axis), and roll (Z axis) rotations in radians.

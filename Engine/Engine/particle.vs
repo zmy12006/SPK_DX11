@@ -2,7 +2,8 @@
 // Filename: particle.vs
 ////////////////////////////////////////////////////////////////////////////////
 
-
+//http://www.opengl-tutorial.org/intermediate-tutorials/billboards-particles/billboards/
+//https://blog.csdn.net/ddupd/article/details/41705953
 /////////////
 // GLOBALS //
 /////////////
