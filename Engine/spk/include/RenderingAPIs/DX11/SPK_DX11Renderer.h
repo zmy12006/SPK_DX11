@@ -120,7 +120,7 @@ namespace DX11
 
 		void initRenderingHints() const;
 
-		//std::map<std::pair<const Group *, int>, IDirect3DResource9 *> DX9Buffers;
+		std::map<std::pair<const Group *, int>, ID3D11Buffer *> DX9Buffers;
 
 	private :
 

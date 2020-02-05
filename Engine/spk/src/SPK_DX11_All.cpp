@@ -28,6 +28,6 @@
 #include "RenderingAPIs/DX11/SPK_DX11Renderer.cpp"
 #include "RenderingAPIs/DX11/SPK_DX11LineRenderer.cpp"
 //#include "RenderingAPIs/DX11/SPK_DX11PointRenderer.cpp"
-//#include "RenderingAPIs/DX11/SPK_DX11QuadRenderer.cpp"
+#include "RenderingAPIs/DX11/SPK_DX11QuadRenderer.cpp"
 //#include "RenderingAPIs/DX11/SPK_DX11LineTrailRenderer.cpp"
 //*/

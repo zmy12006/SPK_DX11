@@ -24,6 +24,9 @@
 #ifndef H_SPK_DX11QUADRENDERER
 #define H_SPK_DX11QUADRENDERER
 
+#include "RenderingAPIs/DX11/Math/Misc.h"
+#include "RenderingAPIs/DX11/Math/SimpleMath.h"
+
 #include "RenderingAPIs/DX11/SPK_DX11Renderer.h"
 #include "Extensions/Renderers/SPK_QuadRendererInterface.h"
 #include "Extensions/Renderers/SPK_Oriented3DRendererInterface.h"
@@ -31,35 +34,44 @@
 #include "Core/SPK_Particle.h"
 #include "Core/SPK_Model.h"
 
+using namespace DirectX;
+
 namespace SPK
 {
 namespace DX11
 {
-	// déclaration du vertex descriptor sans coordonnées de texture
-	const D3DVERTEXELEMENT9 QuadVertexDecl[3] =
+	struct SPKVertexType
 	{
-		{0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
-		{1, 0, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0},
-		D3DDECL_END()
+		SimpleMath::Vector3 position;
+		SimpleMath::Vector2 texture;
+		SimpleMath::Vector4 color;
 	};
 
-	// déclaration du vertex descriptor avec coordonnées de textures 2d
-	const D3DVERTEXELEMENT9 QuadVertexDecl2D[4] =
-	{
-		{0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
-		{1, 0, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0},
-		{2, 0, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
-		D3DDECL_END()
-	};
+	//// déclaration du vertex descriptor sans coordonnées de texture
+	//const D3DVERTEXELEMENT9 QuadVertexDecl[3] =
+	//{
+	//	{0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+	//	{1, 0, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0},
+	//	D3DDECL_END()
+	//};
 
-	// déclaration du vertex descriptor avec coordonnées de textures 3d
-	const D3DVERTEXELEMENT9 QuadVertexDecl3D[4] =
-	{
-		{0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
-		{1, 0, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0},
-		{2, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
-		D3DDECL_END()
-	};
+	//// déclaration du vertex descriptor avec coordonnées de textures 2d
+	//const D3DVERTEXELEMENT9 QuadVertexDecl2D[4] =
+	//{
+	//	{0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+	//	{1, 0, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0},
+	//	{2, 0, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
+	//	D3DDECL_END()
+	//};
+
+	//// déclaration du vertex descriptor avec coordonnées de textures 3d
+	//const D3DVERTEXELEMENT9 QuadVertexDecl3D[4] =
+	//{
+	//	{0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+	//	{1, 0, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0},
+	//	{2, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
+	//	D3DDECL_END()
+	//};
 
 	class SPK_DX11_PREFIX DX9QuadRenderer : public DX11Renderer, public QuadRendererInterface, public Oriented3DRendererInterface
 	{
@@ -83,14 +95,14 @@ namespace DX11
 
 		virtual bool setTexturingMode(TexturingMode mode);
 
-		void setTexture(LPDIRECT3DTEXTURE9 textureIndex);
+		void setTexture(ID3D11ShaderResourceView* textureIndex);
 
 
 		/////////////
 		// Getters //
 		/////////////
 
-		LPDIRECT3DTEXTURE9 getTexture() const;
+		ID3D11ShaderResourceView* getTexture() const;
 
 		///////////////
 		// Interface //
@@ -115,33 +127,40 @@ namespace DX11
 		mutable float modelView[16];
 		mutable float invModelView[16];
 
-		LPDIRECT3DTEXTURE9 textureIndex;
+		ID3D11ShaderResourceView* textureIndex;
 
 		// vertex buffers and iterators
-		static D3DXVECTOR3* vertexBuffer;
-		static D3DXVECTOR3* vertexIterator;
-		static DWORD* colorBuffer;
-		static DWORD* colorIterator;
-		static float* textureBuffer;
-		static float* textureIterator;
+		static SPKVertexType* vertexBuffer;
+		static SPKVertexType* vertexIterator;
+		//static DWORD* colorBuffer;
+		//static DWORD* colorIterator;
+		//static float* textureBuffer;
+		//static float* textureIterator;
 		static short* indexBuffer;
 		static short* indexIterator;
 
-		static LPDIRECT3DVERTEXBUFFER9 DX9VertexBuffer;
-		static LPDIRECT3DVERTEXBUFFER9 DX9ColorBuffer;
-		static LPDIRECT3DVERTEXBUFFER9 DX9TextureBuffer;
-		static LPDIRECT3DINDEXBUFFER9 DX9IndexBuffer;
+		//static LPDIRECT3DVERTEXBUFFER9 DX9VertexBuffer;
+		//static LPDIRECT3DVERTEXBUFFER9 DX9ColorBuffer;
+		//static LPDIRECT3DVERTEXBUFFER9 DX9TextureBuffer;
+		//static LPDIRECT3DINDEXBUFFER9 DX9IndexBuffer;
+
+		static ID3D11Buffer *DX9VertexBuffer; 
+		static ID3D11Buffer *DX9IndexBuffer;
+
+		static ID3D11InputLayout* InputLayout;
 
 		static short offsetIndex;
 
+		//static SPKVertexType* m_vertices;
+
 		// vertex declaration
-		static LPDIRECT3DVERTEXDECLARATION9 pVertexDecl;
-		static LPDIRECT3DVERTEXDECLARATION9 pVertexDecl2D;
-		static LPDIRECT3DVERTEXDECLARATION9 pVertexDecl3D;
+		//static LPDIRECT3DVERTEXDECLARATION9 pVertexDecl;
+		//static LPDIRECT3DVERTEXDECLARATION9 pVertexDecl2D;
+		//static LPDIRECT3DVERTEXDECLARATION9 pVertexDecl3D;
 
 		// buffers names
 		static const std::string VERTEX_BUFFER_NAME;
-		static const std::string COLOR_BUFFER_NAME;
+		//static const std::string COLOR_BUFFER_NAME;
 		static const std::string TEXTURE_BUFFER_NAME;
 		static const std::string INDEX_BUFFER_NAME;
 
@@ -172,76 +191,110 @@ namespace DX11
 		return obj;
 	}
 
-	inline void DX9QuadRenderer::setTexture(LPDIRECT3DTEXTURE9 textureIndex)
+	inline void DX9QuadRenderer::setTexture(ID3D11ShaderResourceView* textureIndex)
 	{
 		this->textureIndex = textureIndex;
 	}
 
-	inline LPDIRECT3DTEXTURE9 DX9QuadRenderer::getTexture() const
+	inline ID3D11ShaderResourceView* DX9QuadRenderer::getTexture() const
 	{
 		return textureIndex;
 	}
 
 	inline void DX9QuadRenderer::DX9CallColorAndVertex(const Particle& particle) const
 	{
+		computeAtlasCoordinates(particle);
+
 		float x = particle.position().x;
 		float y = particle.position().y;
 		float z = particle.position().z;
 
 		// top left vertex
-		(vertexIterator)->x = x + quadSide().x + quadUp().x;
-		(vertexIterator)->y = y + quadSide().y + quadUp().y;
-		(vertexIterator++)->z = z + quadSide().z + quadUp().z;
+		(vertexIterator)->texture.x = textureAtlasU0();
+		(vertexIterator)->texture.y = textureAtlasV0();
+		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->position.x = x + quadSide().x + quadUp().x;
+		(vertexIterator)->position.y = y + quadSide().y + quadUp().y;
+		(vertexIterator++)->position.z = z + quadSide().z + quadUp().z;
 
 		// top right vertex
-		(vertexIterator)->x = x - quadSide().x + quadUp().x;
-		(vertexIterator)->y = y - quadSide().y + quadUp().y;
-		(vertexIterator++)->z = z - quadSide().z + quadUp().z;
+		(vertexIterator)->texture.x = textureAtlasU1();
+		(vertexIterator)->texture.y = textureAtlasV0();
+		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->position.x = x - quadSide().x + quadUp().x;
+		(vertexIterator)->position.y = y - quadSide().y + quadUp().y;
+		(vertexIterator++)->position.z = z - quadSide().z + quadUp().z;
 
 		// bottom right vertex
-		(vertexIterator)->x = x - quadSide().x - quadUp().x;
-		(vertexIterator)->y = y - quadSide().y - quadUp().y;
-		(vertexIterator++)->z = z - quadSide().z - quadUp().z;
+		(vertexIterator)->texture.x = textureAtlasU1();
+		(vertexIterator)->texture.y = textureAtlasV1();
+		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->position.x = x - quadSide().x - quadUp().x;
+		(vertexIterator)->position.y = y - quadSide().y - quadUp().y;
+		(vertexIterator++)->position.z = z - quadSide().z - quadUp().z;
+
+		//---------------------------------------------------------------------------
+
+		// top left vertex
+		(vertexIterator)->texture.x = textureAtlasU0();
+		(vertexIterator)->texture.y = textureAtlasV0();
+		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->position.x = x + quadSide().x + quadUp().x;
+		(vertexIterator)->position.y = y + quadSide().y + quadUp().y;
+		(vertexIterator++)->position.z = z + quadSide().z + quadUp().z;
+
+		// bottom right vertex
+		(vertexIterator)->texture.x = textureAtlasU1();
+		(vertexIterator)->texture.y = textureAtlasV1();
+		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->position.x = x - quadSide().x - quadUp().x;
+		(vertexIterator)->position.y = y - quadSide().y - quadUp().y;
+		(vertexIterator++)->position.z = z - quadSide().z - quadUp().z;
 
 		// bottom left vertex
-		(vertexIterator)->x = x + quadSide().x - quadUp().x;
-		(vertexIterator)->y = y + quadSide().y - quadUp().y;
-		(vertexIterator++)->z = z + quadSide().z - quadUp().z;
+		(vertexIterator)->texture.x = textureAtlasU0();
+		(vertexIterator)->texture.y = textureAtlasV1();
+		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->position.x = x + quadSide().x - quadUp().x;
+		(vertexIterator)->position.y = y + quadSide().y - quadUp().y;
+		(vertexIterator++)->position.z = z + quadSide().z - quadUp().z;
 
 		// TODO : éviter la duplication de l'information couleur
-		DWORD color = D3DCOLOR_COLORVALUE(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
-		*(colorIterator++) = color;
-		*(colorIterator++) = color;
-		*(colorIterator++) = color;
-		*(colorIterator++) = color;
+		//DWORD color = D3DCOLOR_COLORVALUE(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		//*(colorIterator++) = color;
+		//*(colorIterator++) = color;
+		//*(colorIterator++) = color;
+		//*(colorIterator++) = color;
+
+
 	}
 
 	inline void DX9QuadRenderer::DX9CallTexture2DAtlas(const Particle& particle) const
 	{
-		computeAtlasCoordinates(particle);
+		//computeAtlasCoordinates(particle);
 
-		*(textureIterator++) = textureAtlasU0();
-		*(textureIterator++) = textureAtlasV0();
+		//*(textureIterator++) = textureAtlasU0();
+		//*(textureIterator++) = textureAtlasV0();
 
-		*(textureIterator++) = textureAtlasU1();
-		*(textureIterator++) = textureAtlasV0();
+		//*(textureIterator++) = textureAtlasU1();
+		//*(textureIterator++) = textureAtlasV0();
 
-		*(textureIterator++) = textureAtlasU1();
-		*(textureIterator++) = textureAtlasV1();
+		//*(textureIterator++) = textureAtlasU1();
+		//*(textureIterator++) = textureAtlasV1();
 
-		*(textureIterator++) = textureAtlasU0();
-		*(textureIterator++) = textureAtlasV1();	
+		//*(textureIterator++) = textureAtlasU0();
+		//*(textureIterator++) = textureAtlasV1();	
 	}
 
 	inline void DX9QuadRenderer::DX9CallTexture3D(const Particle& particle) const
 	{
 		float textureIndex = particle.getParamCurrentValue(PARAM_TEXTURE_INDEX);
 
-		*(textureIterator + 2) = textureIndex;
-		*(textureIterator + 5) = textureIndex;
-		*(textureIterator + 8) = textureIndex;
-		*(textureIterator + 11) = textureIndex;
-		textureIterator += 12;
+		//*(textureIterator + 2) = textureIndex;
+		//*(textureIterator + 5) = textureIndex;
+		//*(textureIterator + 8) = textureIndex;
+		//*(textureIterator + 11) = textureIndex;
+		//textureIterator += 12;
 	}
 }}
 
