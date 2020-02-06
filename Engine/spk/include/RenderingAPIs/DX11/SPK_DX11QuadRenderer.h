@@ -24,8 +24,8 @@
 #ifndef H_SPK_DX11QUADRENDERER
 #define H_SPK_DX11QUADRENDERER
 
-#include "RenderingAPIs/DX11/Math/Misc.h"
-#include "RenderingAPIs/DX11/Math/SimpleMath.h"
+//#include "RenderingAPIs/DX11/Math/Misc.h"
+//#include "RenderingAPIs/DX11/Math/SimpleMath.h"
 
 #include "RenderingAPIs/DX11/SPK_DX11Renderer.h"
 #include "Extensions/Renderers/SPK_QuadRendererInterface.h"
@@ -42,9 +42,9 @@ namespace DX11
 {
 	struct SPKVertexType
 	{
-		SimpleMath::Vector3 position;
-		SimpleMath::Vector2 texture;
-		SimpleMath::Vector4 color;
+		XMFLOAT3 position;
+		XMFLOAT2 texture;
+		XMFLOAT4 color;
 	};
 
 	//// déclaration du vertex descriptor sans coordonnées de texture
@@ -212,7 +212,7 @@ namespace DX11
 		// top left vertex
 		(vertexIterator)->texture.x = textureAtlasU0();
 		(vertexIterator)->texture.y = textureAtlasV0();
-		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
 		(vertexIterator)->position.x = x + quadSide().x + quadUp().x;
 		(vertexIterator)->position.y = y + quadSide().y + quadUp().y;
 		(vertexIterator++)->position.z = z + quadSide().z + quadUp().z;
@@ -220,7 +220,7 @@ namespace DX11
 		// top right vertex
 		(vertexIterator)->texture.x = textureAtlasU1();
 		(vertexIterator)->texture.y = textureAtlasV0();
-		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
 		(vertexIterator)->position.x = x - quadSide().x + quadUp().x;
 		(vertexIterator)->position.y = y - quadSide().y + quadUp().y;
 		(vertexIterator++)->position.z = z - quadSide().z + quadUp().z;
@@ -228,7 +228,7 @@ namespace DX11
 		// bottom right vertex
 		(vertexIterator)->texture.x = textureAtlasU1();
 		(vertexIterator)->texture.y = textureAtlasV1();
-		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
 		(vertexIterator)->position.x = x - quadSide().x - quadUp().x;
 		(vertexIterator)->position.y = y - quadSide().y - quadUp().y;
 		(vertexIterator++)->position.z = z - quadSide().z - quadUp().z;
@@ -238,7 +238,7 @@ namespace DX11
 		// top left vertex
 		(vertexIterator)->texture.x = textureAtlasU0();
 		(vertexIterator)->texture.y = textureAtlasV0();
-		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
 		(vertexIterator)->position.x = x + quadSide().x + quadUp().x;
 		(vertexIterator)->position.y = y + quadSide().y + quadUp().y;
 		(vertexIterator++)->position.z = z + quadSide().z + quadUp().z;
@@ -246,7 +246,7 @@ namespace DX11
 		// bottom right vertex
 		(vertexIterator)->texture.x = textureAtlasU1();
 		(vertexIterator)->texture.y = textureAtlasV1();
-		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
 		(vertexIterator)->position.x = x - quadSide().x - quadUp().x;
 		(vertexIterator)->position.y = y - quadSide().y - quadUp().y;
 		(vertexIterator++)->position.z = z - quadSide().z - quadUp().z;
@@ -254,7 +254,7 @@ namespace DX11
 		// bottom left vertex
 		(vertexIterator)->texture.x = textureAtlasU0();
 		(vertexIterator)->texture.y = textureAtlasV1();
-		(vertexIterator)->color = SimpleMath::Vector4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
 		(vertexIterator)->position.x = x + quadSide().x - quadUp().x;
 		(vertexIterator)->position.y = y + quadSide().y - quadUp().y;
 		(vertexIterator++)->position.z = z + quadSide().z - quadUp().z;

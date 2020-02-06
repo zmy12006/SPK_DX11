@@ -142,7 +142,7 @@ namespace DX11
 			{
 				const Particle& particle = group.getParticle(i);
 
-				SimpleMath::Color c = SimpleMath::Color(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
+				XMFLOAT4 c = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
 
 				Assign((gpuIterator)->position, particle.position());
 

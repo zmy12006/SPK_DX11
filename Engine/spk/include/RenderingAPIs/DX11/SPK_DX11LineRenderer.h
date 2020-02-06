@@ -24,8 +24,8 @@
 #ifndef H_SPK_DX11LINERENDERER
 #define H_SPK_DX11LINERENDERER
 
-#include "RenderingAPIs/DX11/Math/Misc.h"
-#include "RenderingAPIs/DX11/Math/SimpleMath.h"
+//#include "RenderingAPIs/DX11/Math/Misc.h"
+//#include "RenderingAPIs/DX11/Math/SimpleMath.h"
 
 #include "RenderingAPIs/DX11/SPK_DX11Renderer.h"
 #include "Extensions/Renderers/SPK_LineRendererInterface.h"
@@ -40,8 +40,8 @@ namespace DX11
 {
 	struct LineVertex
 	{
-		SimpleMath::Vector3 position;
-		SimpleMath::Color color;
+		XMFLOAT3 position;
+		XMFLOAT4 color;
 	};
 	
 	class SPK_DX11_PREFIX DX9LineRenderer : public DX11Renderer, public LineRendererInterface
