@@ -196,7 +196,7 @@ namespace DX11
 		//modelView = world * view;
 		//D3DXMatrixInverse((D3DXMATRIX*)&invModelView, NULL, &modelView);
 
-		initBlending();
+		//***initBlending();
 
 		//DX11Info::getDevice()->SetRenderState(D3DRS_SHADEMODE, D3DSHADE_FLAT);
 		//DX11Info::getDevice()->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -253,6 +253,11 @@ namespace DX11
 		//			renderParticle = &DX9QuadRenderer::render2DRot;
 		//		break;
 		//}
+
+		if (!group.getModel()->isEnabled(PARAM_ANGLE))
+			renderParticle = &DX9QuadRenderer::render2D;
+		else
+			renderParticle = &DX9QuadRenderer::render2DRot;
 
 		bool globalOrientation = precomputeOrientation3D(
 			group,

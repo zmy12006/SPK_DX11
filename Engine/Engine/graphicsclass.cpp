@@ -88,12 +88,20 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
+#ifdef USE_SPARK
+	SPK_Init();
+#endif // USE_SPARK
+
+
 	return true;
 }
 
 
 void GraphicsClass::Shutdown()
 {
+#ifdef USE_SPARK
+	SPK_Release();
+#endif // USE_SPARK
 	// Release the particle system object.
 	if(m_ParticleSystem)
 	{
@@ -133,6 +141,10 @@ bool GraphicsClass::Frame(float frameTime)
 {
 	bool result;
 
+
+#ifdef USE_SPARK
+	SPK_Move();
+#endif // USE_SPARK
 
 	// Run the frame processing for the particle system.
 	m_ParticleSystem->Frame(frameTime, m_D3D->GetDeviceContext());
@@ -183,6 +195,18 @@ bool GraphicsClass::Render()
 		return false;
 	}
 
+#ifdef USE_SPARK
+	//SPK_Init();
+	if (particleSystem != NULL)
+	{
+		particleSystem->render();
+		// Render the model using the texture shader.
+		result = m_ParticleShader->Render(m_D3D->GetDeviceContext(), m_ParticleSystem->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+			m_ParticleSystem->GetTexture());
+	}
+
+#endif // USE_SPARK
+
 	// Turn off alpha blending.
 	m_D3D->DisableAlphaBlending();
 
@@ -208,6 +232,7 @@ void GraphicsClass::SPK_Init()
 
 	// Sets the device for SPARK DX9 rendering
 	DX11Info::setDevice(m_D3D->GetDevice());
+	DX11Info::setContext(m_D3D->GetDeviceContext());
 
 	////////////////////////////
 	// Loads particle texture //
@@ -268,6 +293,8 @@ void GraphicsClass::SPK_Init()
 
 void GraphicsClass::SPK_Move()
 {
+	if (particleSystem == NULL) return;
+
 	float deltatime = 0.01f;
 	static float step = 0.0f;
 	step += 0.01f * 0.5f;
