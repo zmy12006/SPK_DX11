@@ -1,8 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: graphicsclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
+
+#include <time.h>
+#include "WICTextureLoader.h"
 #include "graphicsclass.h"
 
+//#define Math_PI 3.1415926f
+
+using namespace DirectX;
 
 GraphicsClass::GraphicsClass()
 {
@@ -185,3 +191,102 @@ bool GraphicsClass::Render()
 
 	return true;
 }
+
+#ifdef USE_SPARK
+void GraphicsClass::SPK_Init()
+{
+	/////////////////////////
+// SPARK initial setup //
+/////////////////////////
+
+// random seed
+	unsigned int randomSeed = static_cast<unsigned int>(time(NULL));
+
+	// Sets the update step
+	System::setClampStep(true, 0.1f);			// clamp the step to 100 ms
+	System::useAdaptiveStep(0.001f, 0.01f);		// use an adaptive step from 1ms to 10ms (1000fps to 100fps)
+
+	// Sets the device for SPARK DX9 rendering
+	DX11Info::setDevice(m_D3D->GetDevice());
+
+	////////////////////////////
+	// Loads particle texture //
+	////////////////////////////
+
+	ID3D11ShaderResourceView* textureParticle = NULL;
+	HRESULT hr = DirectX::CreateWICTextureFromFile(m_D3D->GetDevice(), L"res/point.bmp", NULL, &textureParticle);
+	//hr = D3DXCreateTextureFromFile(g_pD3DDevice, L"res/point.bmp", &textureParticle);
+	if (FAILED(hr))
+		cout << "erreur chargement texture" << endl;
+
+	/////////////////////////////
+	// Creates particle system //
+	/////////////////////////////
+//*
+
+	quadRenderer = DX9QuadRenderer::create(); // quad renderer
+	quadRenderer->enableBlending(true);
+	//quadRenderer->setBlendingFunctions(D3DBLEND_SRCALPHA, D3DBLEND_ONE);
+	quadRenderer->setTexturingMode(TEXTURE_2D);
+	quadRenderer->setTexture(textureParticle);
+	//quadRenderer->setTextureBlending(D3DTOP_MODULATE);
+	quadRenderer->setScale(0.05f, 0.05f);
+	//*/
+
+		// Model
+	particleModel = Model::create(FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA);
+	particleModel->setParam(PARAM_ALPHA, 0.8f); // constant alpha
+	particleModel->setLifeTime(8.0f, 8.0f);
+
+	// Emitter
+	particleEmitter = SphericEmitter::create(Vector3D(0.0f, 1.0f, 0.0f), 0.1f * MATH_PI, 0.1f * MATH_PI);
+	particleEmitter->setZone(Point::create(Vector3D(0.0f, 0.016f, 0.0f)));
+	particleEmitter->setFlow(250);
+	particleEmitter->setForce(1.5f, 1.5f);
+
+	// Modifier
+	groundObstacle = Obstacle::create(Plane::create(), INTERSECT_ZONE, 0.6f, 1.0f);
+
+	// Group
+	particleGroup = Group::create(particleModel, 2100);
+	particleGroup->addEmitter(particleEmitter);
+	particleGroup->addModifier(groundObstacle);
+	particleGroup->setRenderer(quadRenderer);
+	particleGroup->setGravity(Vector3D(0.0f, -0.8f, 0.0f));
+
+	// System
+	particleSystem = System::create();
+	particleSystem->addGroup(particleGroup);
+
+	/////////////////////////////////////
+	// Traces SPARK registered objects //
+	/////////////////////////////////////
+
+	cout << "\nSPARK FACTORY AFTER INIT :" << endl;
+	SPKFactory::getInstance().traceAll();
+}
+
+void GraphicsClass::SPK_Move()
+{
+	float deltatime = 0.01f;
+	static float step = 0.0f;
+	step += 0.01f * 0.5f;
+	particleModel->setParam(PARAM_RED, 0.6f + 0.4f * sin(step));
+	particleModel->setParam(PARAM_GREEN, 0.6f + 0.4f * sin(step + MATH_PI * 2.0f / 3.0f));
+	particleModel->setParam(PARAM_BLUE, 0.6f + 0.4f * sin(step + MATH_PI * 4.0f / 3.0f));
+
+	// Updates particle system
+	particleSystem->update(deltatime);	// 1 defined as a second
+}
+
+void GraphicsClass::SPK_Release()
+{
+	cout << "\nSPARK FACTORY BEFORE DESTRUCTION :" << endl;
+	SPKFactory::getInstance().traceAll();
+	SPKFactory::getInstance().destroyAll();
+	cout << "\nSPARK FACTORY AFTER DESTRUCTION :" << endl;
+	SPKFactory::getInstance().traceAll();
+	SPKFactory::destroyInstance();
+}
+
+#endif
