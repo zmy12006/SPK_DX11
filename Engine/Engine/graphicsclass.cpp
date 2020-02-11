@@ -57,7 +57,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, -2.0f, -2.0f);
+	m_Camera->SetPosition(0.0f, -2.0f, -10.0f);
 	
 	// Create the particle shader object.
 	m_ParticleShader = new ParticleShaderClass;
