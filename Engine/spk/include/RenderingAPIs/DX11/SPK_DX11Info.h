@@ -27,6 +27,7 @@
 
 #include <vector>
 #include <map>
+#include <DirectXMath.h>
 
 namespace SPK
 {
@@ -57,6 +58,11 @@ namespace DX11
 		static void DX11ReleaseRenderer(DX11Renderer *renderer);
 
 		static void DX11DestroyAllBuffers();
+
+		static DirectX::XMFLOAT4X4	MatWorld;
+		static DirectX::XMFLOAT4X4   MatWorldInv;
+		static DirectX::XMFLOAT4X4	MatView;
+		static DirectX::XMFLOAT4X4	MatProj;
 	};
 
 	inline void DX11Info::DX11RegisterRenderer(DX11Renderer *renderer)

@@ -259,6 +259,15 @@ namespace DX11
 		else
 			renderParticle = &DX11QuadRenderer::render2DRot;
 
+		
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				invModelView[i * 4 + j] = DX11Info::MatWorldInv.m[i][j];
+			}
+		}
+
 		bool globalOrientation = precomputeOrientation3D(
 			group,
 			Vector3D(invModelView[8],invModelView[9],invModelView[10]),

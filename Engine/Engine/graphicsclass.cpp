@@ -212,6 +212,13 @@ bool GraphicsClass::Render()
 	//}
 
 #ifdef USE_SPARK
+	SimpleMath::Matrix MatWorld;
+	m_D3D->GetWorldMatrix(MatWorld);
+	DX11Info::MatWorld = MatWorld;
+	DX11Info::MatWorldInv = worldMatrix;
+	DX11Info::MatView = viewMatrix;
+	DX11Info::MatProj = projectionMatrix;
+
 	//SPK_Init();
 	if (particleSystem != NULL)
 	{
@@ -249,7 +256,7 @@ void GraphicsClass::SPK_Init()
 	// Sets the device for SPARK DX11 rendering
 	DX11Info::setDevice(m_D3D->GetDevice());
 	DX11Info::setContext(m_D3D->GetDeviceContext());
-
+	
 	////////////////////////////
 	// Loads particle texture //
 	////////////////////////////

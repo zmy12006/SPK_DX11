@@ -30,6 +30,11 @@ namespace DX11
 	ID3D11Device* DX11Info::device = NULL;
 	ID3D11DeviceContext* DX11Info::context = NULL;
 
+	DirectX::XMFLOAT4X4	DX11Info::MatWorld;
+	DirectX::XMFLOAT4X4   DX11Info::MatWorldInv;
+	DirectX::XMFLOAT4X4	DX11Info::MatView;
+	DirectX::XMFLOAT4X4	DX11Info::MatProj;
+
 	std::vector<DX11Renderer *> DX11Info::renderers = std::vector<DX11Renderer *>();
 
 	void DX11Info::DX11DestroyAllBuffers()
