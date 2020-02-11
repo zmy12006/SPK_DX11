@@ -246,7 +246,7 @@ void GraphicsClass::SPK_Init()
 	System::setClampStep(true, 0.1f);			// clamp the step to 100 ms
 	System::useAdaptiveStep(0.001f, 0.01f);		// use an adaptive step from 1ms to 10ms (1000fps to 100fps)
 
-	// Sets the device for SPARK DX9 rendering
+	// Sets the device for SPARK DX11 rendering
 	DX11Info::setDevice(m_D3D->GetDevice());
 	DX11Info::setContext(m_D3D->GetDeviceContext());
 
@@ -265,7 +265,7 @@ void GraphicsClass::SPK_Init()
 	/////////////////////////////
 //*
 
-	quadRenderer = DX9QuadRenderer::create(); // quad renderer
+	quadRenderer = DX11QuadRenderer::create(); // quad renderer
 	quadRenderer->enableBlending(true);
 	//quadRenderer->setBlendingFunctions(D3DBLEND_SRCALPHA, D3DBLEND_ONE);
 	quadRenderer->setTexturingMode(TEXTURE_2D);

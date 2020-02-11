@@ -73,9 +73,9 @@ namespace DX11
 	//	D3DDECL_END()
 	//};
 
-	class SPK_DX11_PREFIX DX9QuadRenderer : public DX11Renderer, public QuadRendererInterface, public Oriented3DRendererInterface
+	class SPK_DX11_PREFIX DX11QuadRenderer : public DX11Renderer, public QuadRendererInterface, public Oriented3DRendererInterface
 	{
-		SPK_IMPLEMENT_REGISTERABLE(DX9QuadRenderer)
+		SPK_IMPLEMENT_REGISTERABLE(DX11QuadRenderer)
 
 	public :
 
@@ -83,11 +83,11 @@ namespace DX11
 		// Constructors //
 		//////////////////
 
-		DX9QuadRenderer(float scaleX = 1.0f, float scaleY = 1.0f);
+		DX11QuadRenderer(float scaleX = 1.0f, float scaleY = 1.0f);
 
-		virtual ~DX9QuadRenderer();
+		virtual ~DX11QuadRenderer();
 
-		static DX9QuadRenderer* create(float scaleX = 1.0f,float scaleY = 1.0f);
+		static DX11QuadRenderer* create(float scaleX = 1.0f,float scaleY = 1.0f);
 
 		/////////////
 		// Setters //
@@ -111,8 +111,8 @@ namespace DX11
 		virtual void createBuffers(const Group& group);
 		virtual void destroyBuffers(const Group& group);
 
-		virtual bool DX9CreateBuffers(const Group& group);
-		virtual bool DX9DestroyBuffers(const Group& group);
+		virtual bool DX11CreateBuffers(const Group& group);
+		virtual bool DX11DestroyBuffers(const Group& group);
 
 		virtual void render(const Group& group);
 
@@ -120,7 +120,7 @@ namespace DX11
 
 		virtual bool checkBuffers(const Group& group);
 
-		virtual bool DX9CheckBuffers(const Group& group);
+		virtual bool DX11CheckBuffers(const Group& group);
 
 	private :
 
@@ -139,13 +139,13 @@ namespace DX11
 		static short* indexBuffer;
 		static short* indexIterator;
 
-		//static LPDIRECT3DVERTEXBUFFER9 DX9VertexBuffer;
-		//static LPDIRECT3DVERTEXBUFFER9 DX9ColorBuffer;
-		//static LPDIRECT3DVERTEXBUFFER9 DX9TextureBuffer;
-		//static LPDIRECT3DINDEXBUFFER9 DX9IndexBuffer;
+		//static LPDIRECT3DVERTEXBUFFER9 DX11VertexBuffer;
+		//static LPDIRECT3DVERTEXBUFFER9 DX11ColorBuffer;
+		//static LPDIRECT3DVERTEXBUFFER9 DX11TextureBuffer;
+		//static LPDIRECT3DINDEXBUFFER9 DX11IndexBuffer;
 
-		static ID3D11Buffer *DX9VertexBuffer; 
-		static ID3D11Buffer *DX9IndexBuffer;
+		static ID3D11Buffer *DX11VertexBuffer; 
+		static ID3D11Buffer *DX11IndexBuffer;
 
 		static ID3D11InputLayout* InputLayout;
 
@@ -168,11 +168,11 @@ namespace DX11
 		float* createTextureBuffer(const Group& group) const;
 
 
-		void DX9CallColorAndVertex(const Particle& particle) const;	// DX9 calls for color and position
-		void DX9CallTexture2DAtlas(const Particle& particle) const;	// DX9 calls for 2D atlastexturing 
-		void DX9CallTexture3D(const Particle& particle) const;		// DX9 calls for 3D texturing
+		void DX11CallColorAndVertex(const Particle& particle) const;	// DX11 calls for color and position
+		void DX11CallTexture2DAtlas(const Particle& particle) const;	// DX11 calls for 2D atlastexturing 
+		void DX11CallTexture3D(const Particle& particle) const;		// DX11 calls for 3D texturing
 
-		static void (DX9QuadRenderer::*renderParticle)(const Particle&)  const;	// pointer to the right render method
+		static void (DX11QuadRenderer::*renderParticle)(const Particle&)  const;	// pointer to the right render method
 
 		void render2D(const Particle& particle) const;			// Rendering for particles with texture 2D or no texture
 		void render2DRot(const Particle& particle) const;		// Rendering for particles with texture 2D or no texture and rotation
@@ -183,25 +183,25 @@ namespace DX11
 	};
 
 
-	inline DX9QuadRenderer* DX9QuadRenderer::create(float scaleX,float scaleY)
+	inline DX11QuadRenderer* DX11QuadRenderer::create(float scaleX,float scaleY)
 	{
-		DX9QuadRenderer* obj = new DX9QuadRenderer(scaleX,scaleY);
+		DX11QuadRenderer* obj = new DX11QuadRenderer(scaleX,scaleY);
 		registerObject(obj);
-		DX11Info::DX9RegisterRenderer(obj);
+		DX11Info::DX11RegisterRenderer(obj);
 		return obj;
 	}
 
-	inline void DX9QuadRenderer::setTexture(ID3D11ShaderResourceView* textureIndex)
+	inline void DX11QuadRenderer::setTexture(ID3D11ShaderResourceView* textureIndex)
 	{
 		this->textureIndex = textureIndex;
 	}
 
-	inline ID3D11ShaderResourceView* DX9QuadRenderer::getTexture() const
+	inline ID3D11ShaderResourceView* DX11QuadRenderer::getTexture() const
 	{
 		return textureIndex;
 	}
 
-	inline void DX9QuadRenderer::DX9CallColorAndVertex(const Particle& particle) const
+	inline void DX11QuadRenderer::DX11CallColorAndVertex(const Particle& particle) const
 	{
 		computeAtlasCoordinates(particle);
 
@@ -271,7 +271,7 @@ namespace DX11
 
 	}
 
-	inline void DX9QuadRenderer::DX9CallTexture2DAtlas(const Particle& particle) const
+	inline void DX11QuadRenderer::DX11CallTexture2DAtlas(const Particle& particle) const
 	{
 		//computeAtlasCoordinates(particle);
 
@@ -288,7 +288,7 @@ namespace DX11
 		//*(textureIterator++) = textureAtlasV1();	
 	}
 
-	inline void DX9QuadRenderer::DX9CallTexture3D(const Particle& particle) const
+	inline void DX11QuadRenderer::DX11CallTexture3D(const Particle& particle) const
 	{
 		float textureIndex = particle.getParamCurrentValue(PARAM_TEXTURE_INDEX);
 

@@ -32,11 +32,11 @@ namespace DX11
 
 	std::vector<DX11Renderer *> DX11Info::renderers = std::vector<DX11Renderer *>();
 
-	void DX11Info::DX9DestroyAllBuffers()
+	void DX11Info::DX11DestroyAllBuffers()
 	{
 		for(size_t i = 0; i < renderers.size(); i++)
 		{
-			DX11Info::renderers[i]->DX9DestroyAllBuffers();
+			DX11Info::renderers[i]->DX11DestroyAllBuffers();
 		}
 	}
 }}

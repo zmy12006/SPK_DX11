@@ -40,38 +40,38 @@ namespace DX11
 		DX11_TEXTURE_BUFFER_KEY = 1 << 3
 	};
 
-	class SPK_DX11_PREFIX DX9BufferHandler
+	class SPK_DX11_PREFIX DX11BufferHandler
 	{
 	public :
 
-		virtual ~DX9BufferHandler() {}
+		virtual ~DX11BufferHandler() {}
 
-		virtual bool DX9CreateBuffers(const Group& group) {return true;};
+		virtual bool DX11CreateBuffers(const Group& group) {return true;};
 
-		virtual bool DX9DestroyBuffers(const Group& group) {return true;};
+		virtual bool DX11DestroyBuffers(const Group& group) {return true;};
 
 	protected :
 
 		// The constructor is private so that the class is not instanciable
-		DX9BufferHandler() {}
+		DX11BufferHandler() {}
 
-		bool DX9PrepareBuffers(const Group& group);
+		bool DX11PrepareBuffers(const Group& group);
 
-		bool DX9Bind(const Group& group, int key, void** to);
+		bool DX11Bind(const Group& group, int key, void** to);
 
-		bool DX9Release(const Group& group, int key);
+		bool DX11Release(const Group& group, int key);
 
-		bool DX9Create();
+		bool DX11Create();
 
-		virtual bool DX9CheckBuffers(const Group& group);
+		virtual bool DX11CheckBuffers(const Group& group);
 
-		std::map<std::pair<const Group *, int>, ID3D11Buffer*> DX9Buffers;//vb ib buffer
-		std::map<std::pair<const Group *, int>, ID3D11Buffer*>::iterator DX9BuffersIt;
-		std::pair<const Group *, int> DX9BuffersKey;
+		std::map<std::pair<const Group *, int>, ID3D11Buffer*> DX11Buffers;//vb ib buffer
+		std::map<std::pair<const Group *, int>, ID3D11Buffer*>::iterator DX11BuffersIt;
+		std::pair<const Group *, int> DX11BuffersKey;
 
 	};
 
-	inline bool DX9BufferHandler::DX9CheckBuffers(const Group& group)
+	inline bool DX11BufferHandler::DX11CheckBuffers(const Group& group)
 	{
 		return true;
 	}

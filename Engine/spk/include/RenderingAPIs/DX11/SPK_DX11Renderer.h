@@ -34,7 +34,7 @@ namespace SPK
 {
 namespace DX11
 {
-	class SPK_DX11_PREFIX DX11Renderer : public Renderer, public DX9BufferHandler
+	class SPK_DX11_PREFIX DX11Renderer : public Renderer, public DX11BufferHandler
 	{
 	public :
 
@@ -111,7 +111,7 @@ namespace DX11
 		int getTextureBlending() const;
 
 
-		/*virtual */bool DX9DestroyAllBuffers();
+		/*virtual */bool DX11DestroyAllBuffers();
 
 	protected :
 
@@ -120,7 +120,7 @@ namespace DX11
 
 		void initRenderingHints() const;
 
-		//std::map<std::pair<const Group *, int>, ID3D11Buffer *> DX9Buffers;
+		//std::map<std::pair<const Group *, int>, ID3D11Buffer *> DX11Buffers;
 
 	private :
 
@@ -216,15 +216,15 @@ namespace DX11
 		}
 	}
 
-	inline bool DX11Renderer::DX9DestroyAllBuffers()
+	inline bool DX11Renderer::DX11DestroyAllBuffers()
 	{
-		std::map<std::pair<const Group *, int>, ID3D11Buffer *>::iterator it = DX9Buffers.begin();
-		while( it != DX9Buffers.end() )
+		std::map<std::pair<const Group *, int>, ID3D11Buffer *>::iterator it = DX11Buffers.begin();
+		while( it != DX11Buffers.end() )
 		{
 			SAFE_RELEASE( it->second );
 			it++;
 		}
-		DX9Buffers.clear();
+		DX11Buffers.clear();
 		return true;
 	}
 }}

@@ -44,15 +44,15 @@ namespace DX11
 		XMFLOAT4 color;
 	};
 	
-	class SPK_DX11_PREFIX DX9LineRenderer : public DX11Renderer, public LineRendererInterface
+	class SPK_DX11_PREFIX DX11LineRenderer : public DX11Renderer, public LineRendererInterface
 	{
-		SPK_IMPLEMENT_REGISTERABLE(DX9LineRenderer)
+		SPK_IMPLEMENT_REGISTERABLE(DX11LineRenderer)
 
 	public :
 
-		DX9LineRenderer(float length = 1.0f, float width = 1.0f);
+		DX11LineRenderer(float length = 1.0f, float width = 1.0f);
 
-		static DX9LineRenderer* create(float length = 1.0f, float width = 1.0f);
+		static DX11LineRenderer* create(float length = 1.0f, float width = 1.0f);
 
 		virtual void render(const Group& group);
 
@@ -61,14 +61,14 @@ namespace DX11
 
 		
 
-		virtual bool DX9CreateBuffers(const Group& group);
-		virtual bool DX9DestroyBuffers(const Group& group);
+		virtual bool DX11CreateBuffers(const Group& group);
+		virtual bool DX11DestroyBuffers(const Group& group);
 
 	protected :
 
 		virtual bool checkBuffers(const Group& group);
 
-		virtual bool DX9CheckBuffers(const Group& group);
+		virtual bool DX11CheckBuffers(const Group& group);
 
 	private :
 
@@ -77,27 +77,27 @@ namespace DX11
 		static LineVertex* gpuBuffer;
 		static LineVertex* gpuIterator;
 
-		static ID3D11Buffer* DX9VertexBuffer;
+		static ID3D11Buffer* DX11VertexBuffer;
 
-#define DX9LINERENDERER_AS_LINELIST
-#ifndef DX9LINERENDERER_AS_LINELIST
+#define DX11LINERENDERER_AS_LINELIST
+#ifndef DX11LINERENDERER_AS_LINELIST
 		static LPDIRECT3DINDEXBUFFER9 indexBuffer;
 		static short* indexIterator;
 #endif
 
 		// buffers names
 		static const std::string GPU_BUFFER_NAME;
-#ifndef DX9LINERENDERER_AS_LINELIST
+#ifndef DX11LINERENDERER_AS_LINELIST
 		static const std::string INDEX_BUFFER_NAME;
 #endif
 
 	};
 
-	inline DX9LineRenderer* DX9LineRenderer::create(float length, float width)
+	inline DX11LineRenderer* DX11LineRenderer::create(float length, float width)
 	{
-		DX9LineRenderer* obj = new DX9LineRenderer(length, width);
+		DX11LineRenderer* obj = new DX11LineRenderer(length, width);
 		registerObject(obj);
-		DX11Info::DX9RegisterRenderer(obj);
+		DX11Info::DX11RegisterRenderer(obj);
 		return obj;
 	}
 }}

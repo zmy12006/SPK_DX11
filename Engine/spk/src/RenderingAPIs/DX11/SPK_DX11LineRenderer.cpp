@@ -30,26 +30,26 @@ namespace SPK
 {
 namespace DX11
 {
-	const std::string DX9LineRenderer::GPU_BUFFER_NAME("SPK_DX9LineRenderer_GPU");
-#ifndef DX9LINERENDERER_AS_LINELIST
-	const std::string DX9LineRenderer::INDEX_BUFFER_NAME("SPK_DX9LineRenderer_Index");
+	const std::string DX11LineRenderer::GPU_BUFFER_NAME("SPK_DX11LineRenderer_GPU");
+#ifndef DX11LINERENDERER_AS_LINELIST
+	const std::string DX11LineRenderer::INDEX_BUFFER_NAME("SPK_DX11LineRenderer_Index");
 #endif
 
-	LineVertex* DX9LineRenderer::gpuBuffer = NULL;
-	LineVertex* DX9LineRenderer::gpuIterator = NULL;
+	LineVertex* DX11LineRenderer::gpuBuffer = NULL;
+	LineVertex* DX11LineRenderer::gpuIterator = NULL;
 
-	ID3D11Buffer* DX9LineRenderer::DX9VertexBuffer = NULL;
-#ifndef DX9LINERENDERER_AS_LINELIST
-	LPDIRECT3DINDEXBUFFER9 DX9LineRenderer::indexBuffer = NULL;
-	short* DX9LineRenderer::indexIterator = NULL;
+	ID3D11Buffer* DX11LineRenderer::DX11VertexBuffer = NULL;
+#ifndef DX11LINERENDERER_AS_LINELIST
+	LPDIRECT3DINDEXBUFFER9 DX11LineRenderer::indexBuffer = NULL;
+	short* DX11LineRenderer::indexIterator = NULL;
 #endif
 
-	DX9LineRenderer::DX9LineRenderer(float length, float width) :
+	DX11LineRenderer::DX11LineRenderer(float length, float width) :
 		DX11Renderer(),
 		LineRendererInterface(length,width)
 	{}
 
-	bool DX9LineRenderer::checkBuffers(const Group& group)
+	bool DX11LineRenderer::checkBuffers(const Group& group)
 	{
 		ArrayBuffer<LineVertex>* lvBuffer = NULL;
 		if( (lvBuffer = dynamic_cast<ArrayBuffer<LineVertex>*>(group.getBuffer(GPU_BUFFER_NAME))) == NULL )
@@ -59,9 +59,9 @@ namespace DX11
 		}
 		gpuIterator = gpuBuffer = lvBuffer->getData();
 
-#ifndef DX9LINERENDERER_AS_LINELIST
-		DX9IndexBuffer<short>* ibIndexBuffer = NULL;
-		if ((ibIndexBuffer = dynamic_cast<DX9IndexBuffer<short>*>(group.getBuffer(INDEX_BUFFER_NAME))) == NULL)
+#ifndef DX11LINERENDERER_AS_LINELIST
+		DX11IndexBuffer<short>* ibIndexBuffer = NULL;
+		if ((ibIndexBuffer = dynamic_cast<DX11IndexBuffer<short>*>(group.getBuffer(INDEX_BUFFER_NAME))) == NULL)
 		{
 			ibIndexBuffer = NULL;
 			return false;
@@ -72,17 +72,17 @@ namespace DX11
 		return true;
 	}
 
-	void DX9LineRenderer::createBuffers(const Group& group)
+	void DX11LineRenderer::createBuffers(const Group& group)
 	{
-#ifdef DX9LINERENDERER_AS_LINELIST
+#ifdef DX11LINERENDERER_AS_LINELIST
 		ArrayBuffer<LineVertex>* lvBuffer = dynamic_cast<ArrayBuffer<LineVertex>*>(group.createBuffer(GPU_BUFFER_NAME,ArrayBufferCreator<LineVertex>(2),0,false));
 #else
-		DX9VertexBuffer<LineVertex>* lvBuffer = dynamic_cast<DX9VertexBuffer<LineVertex>*>(group.createBuffer(GPU_BUFFER_NAME,DX9VertexBufferCreator<LineVertex>((D3DFVF_XYZ|D3DFVF_DIFFUSE), 4),0,false));
+		DX11VertexBuffer<LineVertex>* lvBuffer = dynamic_cast<DX11VertexBuffer<LineVertex>*>(group.createBuffer(GPU_BUFFER_NAME,DX11VertexBufferCreator<LineVertex>((D3DFVF_XYZ|D3DFVF_DIFFUSE), 4),0,false));
 #endif
 		gpuIterator = gpuBuffer = lvBuffer->getData();
 
-#ifndef DX9LINERENDERER_AS_LINELIST
-		DX9IndexBuffer<short>* ibIndexBuffer  = dynamic_cast<DX9IndexBuffer<short>*>(group.createBuffer(INDEX_BUFFER_NAME, DX9IndexBufferCreator<short>(D3DFMT_INDEX16, 6),0,false));
+#ifndef DX11LINERENDERER_AS_LINELIST
+		DX11IndexBuffer<short>* ibIndexBuffer  = dynamic_cast<DX11IndexBuffer<short>*>(group.createBuffer(INDEX_BUFFER_NAME, DX11IndexBufferCreator<short>(D3DFMT_INDEX16, 6),0,false));
 		indexBuffer = ibIndexBuffer->getData();
 
 		int offsetIndex = 0;
@@ -92,8 +92,8 @@ namespace DX11
 
 		for(size_t i = 0; i < group.getParticles().getNbReserved(); i++)
 		{
-//#define _DX9LINERENDERER_CLOCKWISE_
-#ifdef _DX9LINERENDERER_CLOCKWISE_
+//#define _DX11LINERENDERER_CLOCKWISE_
+#ifdef _DX11LINERENDERER_CLOCKWISE_
 			*(indexIterator++) = 0 + offsetIndex;
 			*(indexIterator++) = 1 + offsetIndex;
 			*(indexIterator++) = 2 + offsetIndex;
@@ -115,20 +115,20 @@ namespace DX11
 #endif
 	}
 
-	void DX9LineRenderer::destroyBuffers(const Group& group)
+	void DX11LineRenderer::destroyBuffers(const Group& group)
 	{
 		group.destroyBuffer(GPU_BUFFER_NAME);
-#ifndef DX9LINERENDERER_AS_LINELIST
+#ifndef DX11LINERENDERER_AS_LINELIST
 		group.destroyBuffer(INDEX_BUFFER_NAME);
 #endif
 	}
 
-#ifdef DX9LINERENDERER_AS_LINELIST
-	void DX9LineRenderer::render(const Group& group)
+#ifdef DX11LINERENDERER_AS_LINELIST
+	void DX11LineRenderer::render(const Group& group)
 	{
 		HRESULT hr;
 
-		if( !DX9PrepareBuffers(group) )
+		if( !DX11PrepareBuffers(group) )
 			return;
 		
 		if (!prepareBuffers(group))
@@ -154,32 +154,32 @@ namespace DX11
 			}
 
 			D3D11_MAPPED_SUBRESOURCE MappedResource;
-			hr = DX11Info::getContext()->Map(DX9VertexBuffer, 0, D3D11_MAP_WRITE, 0, &MappedResource);
+			hr = DX11Info::getContext()->Map(DX11VertexBuffer, 0, D3D11_MAP_WRITE, 0, &MappedResource);
 			if ( hr == S_OK )
 			{
 				std::memcpy(MappedResource.pData, gpuBuffer, group.getNbParticles() * 2 * sizeof(LineVertex));
 				
-				DX11Info::getContext()->Unmap(DX9VertexBuffer, 0);
+				DX11Info::getContext()->Unmap(DX11VertexBuffer, 0);
 				//???
 			}
 			
 
 			//void *ptr;
-			//if( DX9VertexBuffer->Lock(0, 0, &ptr, 0) == D3D_OK )
+			//if( DX11VertexBuffer->Lock(0, 0, &ptr, 0) == D3D_OK )
 			//{
 			//	std::memcpy(ptr, gpuBuffer, group.getNbParticles() * 2 * sizeof(LineVertex));
-			//	if( DX9VertexBuffer->Unlock() == D3D_OK )
+			//	if( DX11VertexBuffer->Unlock() == D3D_OK )
 			//	{
 			//		ID3D11Device* device = DX11Info::getDevice();
 			//		//device->SetFVF(D3DFVF_XYZ|D3DFVF_DIFFUSE);
-			//		//device->SetStreamSource(0, DX9VertexBuffer, 0, sizeof(LineVertex));
+			//		//device->SetStreamSource(0, DX11VertexBuffer, 0, sizeof(LineVertex));
 			//		//device->DrawPrimitive(D3DPT_LINELIST, 0, group.getNbParticles());
 			//	}
 			//}
 		}
 	}
 #else
-	void DX9LineRenderer::render(const Group& group)
+	void DX11LineRenderer::render(const Group& group)
 	{
 		HRESULT hr;
 
@@ -247,18 +247,18 @@ namespace DX11
 #endif
 
 
-	bool DX9LineRenderer::DX9CheckBuffers(const Group& group)
+	bool DX11LineRenderer::DX11CheckBuffers(const Group& group)
 	{
-		if( !DX9Bind(group, DX11_VERTEX_BUFFER_KEY, (void**)&DX9VertexBuffer) )
+		if( !DX11Bind(group, DX11_VERTEX_BUFFER_KEY, (void**)&DX11VertexBuffer) )
 		{
-			DX9VertexBuffer = NULL;
+			DX11VertexBuffer = NULL;
 			return false;
 		}
 
 		return true;
 	}
 
-	bool DX9LineRenderer::DX9CreateBuffers(const Group& group)
+	bool DX11LineRenderer::DX11CreateBuffers(const Group& group)
 	{
 		if( DX11Info::getDevice() == NULL ) return false;
 
@@ -279,17 +279,17 @@ namespace DX11
 		}
 		//if( DX11Info::getDevice()->CreateVertexBuffer(group.getParticles().getNbReserved() * 2 * sizeof(LineVertex), 0, D3DFVF_XYZ|D3DFVF_DIFFUSE, D3DPOOL_DEFAULT, &vb, NULL) != S_OK ) return false;
 		std::pair<const Group *, int> key(&group, DX11_VERTEX_BUFFER_KEY);
-		DX9Buffers[key] = vb;
-		DX9VertexBuffer = vb;
+		DX11Buffers[key] = vb;
+		DX11VertexBuffer = vb;
 
 		return true;
 	}
 
-	bool DX9LineRenderer::DX9DestroyBuffers(const Group& group)
+	bool DX11LineRenderer::DX11DestroyBuffers(const Group& group)
 	{
-		DX9Release(group, DX11_VERTEX_BUFFER_KEY);
+		DX11Release(group, DX11_VERTEX_BUFFER_KEY);
 
-		DX9VertexBuffer = NULL;
+		DX11VertexBuffer = NULL;
 
 		return true;
 	}

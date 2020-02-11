@@ -53,18 +53,18 @@ namespace DX11
 		//static void setPool(D3DPOOL pool);
 		static void setContext(ID3D11DeviceContext* pContext){ context = pContext; }
 
-		static void DX9RegisterRenderer(DX11Renderer *renderer);
-		static void DX9ReleaseRenderer(DX11Renderer *renderer);
+		static void DX11RegisterRenderer(DX11Renderer *renderer);
+		static void DX11ReleaseRenderer(DX11Renderer *renderer);
 
-		static void DX9DestroyAllBuffers();
+		static void DX11DestroyAllBuffers();
 	};
 
-	inline void DX11Info::DX9RegisterRenderer(DX11Renderer *renderer)
+	inline void DX11Info::DX11RegisterRenderer(DX11Renderer *renderer)
 	{
 		renderers.push_back(renderer);
 	}
 
-	inline void DX11Info::DX9ReleaseRenderer(DX11Renderer *renderer)
+	inline void DX11Info::DX11ReleaseRenderer(DX11Renderer *renderer)
 	{
 		for(std::vector<DX11Renderer *>::iterator it = renderers.begin(); it != renderers.end(); )
 		{

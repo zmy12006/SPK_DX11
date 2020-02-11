@@ -70,7 +70,7 @@ private:
 	SPK::Model* particleModel = NULL;
 
 	//*
-	SPK::DX11::DX9QuadRenderer* quadRenderer = NULL;
+	SPK::DX11::DX11QuadRenderer* quadRenderer = NULL;
 	//*/
 
 	SPK::SphericEmitter *particleEmitter = NULL;

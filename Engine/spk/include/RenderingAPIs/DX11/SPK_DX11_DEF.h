@@ -30,7 +30,7 @@
 
 // 1.02.02 Compatibility with older versions
 #ifdef SPK_DLL
-#define SPK_DX9_IMPORT
+#define SPK_DX11_IMPORT
 #endif
 
 #ifdef SPK_DX11_EXPORT
@@ -122,7 +122,7 @@ inline void Assign(SPK::Vector3D& Destination, const DirectX::XMFLOAT3& Source)
 #endif
 
 /**
-* @namespace SPK::DX9
+* @namespace SPK::DX11
 * @brief the namespace for DirectX9 dependent SPARK code
 * @since nc
 */

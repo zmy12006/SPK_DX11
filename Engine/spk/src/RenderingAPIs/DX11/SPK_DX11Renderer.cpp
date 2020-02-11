@@ -36,7 +36,7 @@ namespace DX11
 		//textureBlending(D3DTOP_MODULATE)
 	{}
 
-	DX11Renderer::~DX11Renderer() {DX11Info::DX9ReleaseRenderer(this);}
+	DX11Renderer::~DX11Renderer() {DX11Info::DX11ReleaseRenderer(this);}
 
 	void DX11Renderer::setBlending(BlendingMode blendMode)
 	{

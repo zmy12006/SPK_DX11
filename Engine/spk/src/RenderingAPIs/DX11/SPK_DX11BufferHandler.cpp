@@ -27,16 +27,16 @@ namespace SPK
 {
 namespace DX11
 {
-	bool DX9BufferHandler::DX9PrepareBuffers(const Group& group)
+	bool DX11BufferHandler::DX11PrepareBuffers(const Group& group)
 	{
-		if(!DX9CheckBuffers(group))
+		if(!DX11CheckBuffers(group))
 		{
 			//if (isBuffersCreationEnabled())
 			{
-				DX9DestroyBuffers(group);
-				if( !DX9CreateBuffers(group) )
+				DX11DestroyBuffers(group);
+				if( !DX11CreateBuffers(group) )
 				{
-//					std::cout << "DX9CreateBuffers echec" << std::endl;
+//					std::cout << "DX11CreateBuffers echec" << std::endl;
 					return false;
 				}
 				return true;
@@ -46,21 +46,21 @@ namespace DX11
 		return true;
 	}
 
-	bool DX9BufferHandler::DX9Bind(const Group& group, int key, void** to)
+	bool DX11BufferHandler::DX11Bind(const Group& group, int key, void** to)
 	{
-		DX9BuffersKey = std::pair<const Group *, int>(&group, key);
-		DX9BuffersIt = DX9Buffers.find(DX9BuffersKey);
-		if( DX9BuffersIt == DX9Buffers.end() ) return false;
+		DX11BuffersKey = std::pair<const Group *, int>(&group, key);
+		DX11BuffersIt = DX11Buffers.find(DX11BuffersKey);
+		if( DX11BuffersIt == DX11Buffers.end() ) return false;
 
 		switch( key )
 		{
 			case DX11_VERTEX_BUFFER_KEY:
 			case DX11_COLOR_BUFFER_KEY:
 			case DX11_TEXTURE_BUFFER_KEY:
-				*to = reinterpret_cast<ID3D11Buffer*>(DX9BuffersIt->second);
+				*to = reinterpret_cast<ID3D11Buffer*>(DX11BuffersIt->second);
 				break;
 			case DX11_INDEX_BUFFER_KEY:
-				*to = reinterpret_cast<ID3D11Buffer*>(DX9BuffersIt->second);
+				*to = reinterpret_cast<ID3D11Buffer*>(DX11BuffersIt->second);
 				break;
 			default:
 				return false;
@@ -68,14 +68,14 @@ namespace DX11
 		return true;
 	}
 
-	bool DX9BufferHandler::DX9Release(const Group& group, int key)
+	bool DX11BufferHandler::DX11Release(const Group& group, int key)
 	{
-		DX9BuffersKey = std::pair<const Group *, int>(&group, key);
-		DX9BuffersIt = DX9Buffers.find(DX9BuffersKey);
-		if( DX9BuffersIt != DX9Buffers.end() )
+		DX11BuffersKey = std::pair<const Group *, int>(&group, key);
+		DX11BuffersIt = DX11Buffers.find(DX11BuffersKey);
+		if( DX11BuffersIt != DX11Buffers.end() )
 		{
-			SAFE_RELEASE( DX9BuffersIt->second );
-			DX9Buffers.erase(DX9BuffersIt);
+			SAFE_RELEASE( DX11BuffersIt->second );
+			DX11Buffers.erase(DX11BuffersIt);
 		}
 		return true;
 	}
