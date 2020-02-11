@@ -93,6 +93,40 @@ bool ParticleSystemClass::Frame(float frameTime, ID3D11DeviceContext* deviceCont
 	return true;
 }
 
+bool ParticleSystemClass::FrameEx(float frameTime, ID3D11DeviceContext* deviceContext, std::vector<SimpleMath::Vector3> posSet)
+{
+	bool result;
+
+	// Release old particles.
+	KillParticles();
+
+	// Emit new particles.
+	EmitParticles(frameTime);
+
+	for (int i = 0; i < m_currentParticleCount; i++)
+	{
+		if (i < posSet.size())
+		{
+			m_particleList[i].positionX = posSet[i].x;
+			m_particleList[i].positionY = posSet[i].y;
+			m_particleList[i].positionZ = posSet[i].z;
+		}
+		else
+			m_particleList[i].positionY = m_particleList[i].positionY - (m_particleList[i].velocity * frameTime * 0.001f);
+	}
+	// Update the position of the particles.
+	//UpdateParticles(frameTime);
+
+	// Update the dynamic vertex buffer with the new position of each particle.
+	result = UpdateBuffers(deviceContext);
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 
 void ParticleSystemClass::Render(ID3D11DeviceContext* deviceContext)
 {

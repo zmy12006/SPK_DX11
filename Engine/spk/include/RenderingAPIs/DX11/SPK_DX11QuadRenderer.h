@@ -209,28 +209,30 @@ namespace DX11
 		float y = particle.position().y;
 		float z = particle.position().z;
 
+		float psize = 0.2f;
+
 		// top left vertex
 		(vertexIterator)->texture.x = textureAtlasU0();
 		(vertexIterator)->texture.y = textureAtlasV0();
 		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
-		(vertexIterator)->position.x = x + quadSide().x + quadUp().x;
-		(vertexIterator)->position.y = y + quadSide().y + quadUp().y;
+		(vertexIterator)->position.x = x - psize;// x + quadSide().x + quadUp().x;
+		(vertexIterator)->position.y = y + psize;// y + quadSide().y + quadUp().y;
 		(vertexIterator++)->position.z = z + quadSide().z + quadUp().z;
 
 		// top right vertex
 		(vertexIterator)->texture.x = textureAtlasU1();
 		(vertexIterator)->texture.y = textureAtlasV0();
 		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
-		(vertexIterator)->position.x = x - quadSide().x + quadUp().x;
-		(vertexIterator)->position.y = y - quadSide().y + quadUp().y;
+		(vertexIterator)->position.x = x + psize;// x - quadSide().x + quadUp().x;
+		(vertexIterator)->position.y = y + psize;// y - quadSide().y + quadUp().y;
 		(vertexIterator++)->position.z = z - quadSide().z + quadUp().z;
 
 		// bottom right vertex
 		(vertexIterator)->texture.x = textureAtlasU1();
 		(vertexIterator)->texture.y = textureAtlasV1();
 		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
-		(vertexIterator)->position.x = x - quadSide().x - quadUp().x;
-		(vertexIterator)->position.y = y - quadSide().y - quadUp().y;
+		(vertexIterator)->position.x = x + psize;// x - quadSide().x - quadUp().x;
+		(vertexIterator)->position.y = y - psize;// y - quadSide().y - quadUp().y;
 		(vertexIterator++)->position.z = z - quadSide().z - quadUp().z;
 
 		//---------------------------------------------------------------------------
@@ -239,24 +241,24 @@ namespace DX11
 		(vertexIterator)->texture.x = textureAtlasU0();
 		(vertexIterator)->texture.y = textureAtlasV0();
 		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
-		(vertexIterator)->position.x = x + quadSide().x + quadUp().x;
-		(vertexIterator)->position.y = y + quadSide().y + quadUp().y;
+		(vertexIterator)->position.x = x - psize;// x + quadSide().x + quadUp().x;
+		(vertexIterator)->position.y = y + psize;// y + quadSide().y + quadUp().y;
 		(vertexIterator++)->position.z = z + quadSide().z + quadUp().z;
 
 		// bottom right vertex
 		(vertexIterator)->texture.x = textureAtlasU1();
 		(vertexIterator)->texture.y = textureAtlasV1();
 		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
-		(vertexIterator)->position.x = x - quadSide().x - quadUp().x;
-		(vertexIterator)->position.y = y - quadSide().y - quadUp().y;
+		(vertexIterator)->position.x = x + psize;// x - quadSide().x - quadUp().x;
+		(vertexIterator)->position.y = y - psize;// y - quadSide().y - quadUp().y;
 		(vertexIterator++)->position.z = z - quadSide().z - quadUp().z;
 
 		// bottom left vertex
 		(vertexIterator)->texture.x = textureAtlasU0();
 		(vertexIterator)->texture.y = textureAtlasV1();
 		(vertexIterator)->color = XMFLOAT4(particle.getR(), particle.getG(), particle.getB(), particle.getParamCurrentValue(PARAM_ALPHA));
-		(vertexIterator)->position.x = x + quadSide().x - quadUp().x;
-		(vertexIterator)->position.y = y + quadSide().y - quadUp().y;
+		(vertexIterator)->position.x = x - psize;// x + quadSide().x - quadUp().x;
+		(vertexIterator)->position.y = y - psize;// y + quadSide().y - quadUp().y;
 		(vertexIterator++)->position.z = z + quadSide().z - quadUp().z;
 
 		// TODO : éviter la duplication de l'information couleur

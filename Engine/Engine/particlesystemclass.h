@@ -8,6 +8,7 @@
 //////////////
 // INCLUDES //
 //////////////
+#include<vector>
 #include <d3d11.h>
 //#include <d3dx10math.h>
 #include "SimpleMath.h"
@@ -48,6 +49,7 @@ public:
 	bool Initialize(ID3D11Device*, WCHAR*);
 	void Shutdown();
 	bool Frame(float, ID3D11DeviceContext*);
+	bool FrameEx(float, ID3D11DeviceContext*, std::vector<SimpleMath::Vector3>);
 	void Render(ID3D11DeviceContext*);
 
 	ID3D11ShaderResourceView* GetTexture();

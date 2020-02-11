@@ -302,23 +302,42 @@ namespace DX11
 			DX11Info::getContext()->Unmap(DX9VertexBuffer, 0);
 		}
 
+		//{
+		//	HRESULT result;
+		//	D3D11_MAPPED_SUBRESOURCE mappedResource;
+		//	result = DX11Info::getContext()->Map(DX9IndexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		//	if (FAILED(result))
+		//	{
+		//		return;
+		//	}
+
+		//	// Get a pointer to the data in the vertex buffer.
+		//	short* verticesPtr = (short*)mappedResource.pData;
+
+		//	// Copy the data into the vertex buffer.
+		//	memcpy(verticesPtr, (void*)indexBuffer, (sizeof(short)* 6 * group.getNbParticles()));
+
+		//	// Unlock the vertex buffer.
+		//	DX11Info::getContext()->Unmap(DX9IndexBuffer, 0);
+		//}
+
 		{
-			HRESULT result;
-			D3D11_MAPPED_SUBRESOURCE mappedResource;
-			result = DX11Info::getContext()->Map(DX9IndexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			if (FAILED(result))
-			{
-				return;
-			}
+			unsigned int stride;
+			unsigned int offset;
 
-			// Get a pointer to the data in the vertex buffer.
-			short* verticesPtr = (short*)mappedResource.pData;
 
-			// Copy the data into the vertex buffer.
-			memcpy(verticesPtr, (void*)indexBuffer, (sizeof(short)* 6 * group.getNbParticles()));
+			// Set vertex buffer stride and offset.
+			stride = sizeof(SPKVertexType);
+			offset = 0;
 
-			// Unlock the vertex buffer.
-			DX11Info::getContext()->Unmap(DX9IndexBuffer, 0);
+			// Set the vertex buffer to active in the input assembler so it can be rendered.
+			DX11Info::getContext()->IASetVertexBuffers(0, 1, &DX9VertexBuffer, &stride, &offset);
+
+			// Set the index buffer to active in the input assembler so it can be rendered.
+			DX11Info::getContext()->IASetIndexBuffer(DX9IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+			// Set the type of primitive that should be rendered from this vertex buffer.
+			DX11Info::getContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
 		

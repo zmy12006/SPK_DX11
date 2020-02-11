@@ -146,6 +146,22 @@ bool GraphicsClass::Frame(float frameTime)
 	SPK_Move();
 #endif // USE_SPARK
 
+	//if (particleSystem && particleSystem->getGroup(0))
+	//{
+	//	const Pool<Particle>& particles = particleSystem->getGroup(0)->getParticles();
+	//	std::vector<SimpleMath::Vector3> posSet;
+	//	for (int i = 0; i < particles.size(); i++)
+	//	{
+	//		SimpleMath::Vector3 pos;
+	//		pos.x = particles[i].position().x;
+	//		pos.y = particles[i].position().y;
+	//		pos.z = particles[i].position().z;
+	//		posSet.push_back(pos);
+	//	}
+	//	m_ParticleSystem->FrameEx(frameTime, m_D3D->GetDeviceContext(), posSet);
+	//}
+		
+
 	// Run the frame processing for the particle system.
 	m_ParticleSystem->Frame(frameTime, m_D3D->GetDeviceContext());
 
@@ -188,12 +204,12 @@ bool GraphicsClass::Render()
 	m_ParticleSystem->Render(m_D3D->GetDeviceContext());
 
 	// Render the model using the texture shader.
-	result = m_ParticleShader->Render(m_D3D->GetDeviceContext(), m_ParticleSystem->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
-									  m_ParticleSystem->GetTexture());
-	if(!result)
-	{
-		return false;
-	}
+	//result = m_ParticleShader->Render(m_D3D->GetDeviceContext(), m_ParticleSystem->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
+	//								  m_ParticleSystem->GetTexture());
+	//if(!result)
+	//{
+	//	return false;
+	//}
 
 #ifdef USE_SPARK
 	//SPK_Init();
@@ -255,13 +271,15 @@ void GraphicsClass::SPK_Init()
 	quadRenderer->setTexturingMode(TEXTURE_2D);
 	quadRenderer->setTexture(textureParticle);
 	//quadRenderer->setTextureBlending(D3DTOP_MODULATE);
-	quadRenderer->setScale(0.05f, 0.05f);
+	//quadRenderer->setScale(0.05f, 0.05f);
+	quadRenderer->setScale(0.2f, 0.2f);
 	//*/
 
 		// Model
-	particleModel = Model::create(FLAG_RED | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA);
+	particleModel = Model::create(FLAG_RED | FLAG_SIZE | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA);
 	particleModel->setParam(PARAM_ALPHA, 0.8f); // constant alpha
 	particleModel->setLifeTime(8.0f, 8.0f);
+	particleModel->setParam(PARAM_SIZE, 5.0, 10.0f);
 
 	// Emitter
 	particleEmitter = SphericEmitter::create(Vector3D(0.0f, 1.0f, 0.0f), 0.1f * MATH_PI, 0.1f * MATH_PI);
