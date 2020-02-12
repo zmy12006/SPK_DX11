@@ -6,6 +6,8 @@
 #include "WICTextureLoader.h"
 #include "graphicsclass.h"
 
+#include "SPK_Example.h"
+
 //#define Math_PI 3.1415926f
 
 using namespace DirectX;
@@ -220,12 +222,16 @@ bool GraphicsClass::Render()
 	DX11Info::MatProj = projectionMatrix;
 
 	//SPK_Init();
-	if (particleSystem != NULL)
+	//if (particleSystem != NULL)
+	//{
+	//	particleSystem->render();
+	//	// Render the model using the texture shader.
+	//	result = m_ParticleShader->Render(m_D3D->GetDeviceContext(), m_ParticleSystem->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+	//		m_ParticleSystem->GetTexture());
+	//}
+	if (exampleBase != NULL)
 	{
-		particleSystem->render();
-		// Render the model using the texture shader.
-		result = m_ParticleShader->Render(m_D3D->GetDeviceContext(), m_ParticleSystem->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-			m_ParticleSystem->GetTexture());
+		exampleBase->Render();
 	}
 
 #endif // USE_SPARK
@@ -237,6 +243,26 @@ bool GraphicsClass::Render()
 	m_D3D->EndScene();
 
 	return true;
+}
+
+void GraphicsClass::SPKRender(int indexCount, DirectX::XMFLOAT4X4  worldMatrix1, DirectX::XMFLOAT4X4  viewMatrix1,
+	DirectX::XMFLOAT4X4 projectionMatrix1, ID3D11ShaderResourceView* texture)
+{
+	SimpleMath::Matrix worldMatrix, viewMatrix, projectionMatrix;
+	bool result;
+
+
+	// Get the world, view, and projection matrices from the camera and d3d objects.
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_D3D->GetWorldMatrix(worldMatrix);
+	m_D3D->GetProjectionMatrix(projectionMatrix);
+
+	//SimpleMath::Matrix tmpWorld = viewMatrix;
+	//tmpWorld._41 = tmpWorld._42 = tmpWorld._43 = 0.0f;
+	//worldMatrix = tmpWorld.Invert();
+
+	m_ParticleShader->Render(m_D3D->GetDeviceContext(), indexCount, worldMatrix, viewMatrix, projectionMatrix,
+		texture);
 }
 
 #ifdef USE_SPARK
@@ -257,56 +283,59 @@ void GraphicsClass::SPK_Init()
 	DX11Info::setDevice(m_D3D->GetDevice());
 	DX11Info::setContext(m_D3D->GetDeviceContext());
 	
-	////////////////////////////
-	// Loads particle texture //
-	////////////////////////////
+//	////////////////////////////
+//	// Loads particle texture //
+//	////////////////////////////
+//
+//	ID3D11ShaderResourceView* textureParticle = NULL;
+//	HRESULT hr = DirectX::CreateWICTextureFromFile(m_D3D->GetDevice(), L"res/point.bmp", NULL, &textureParticle);
+//	//hr = D3DXCreateTextureFromFile(g_pD3DDevice, L"res/point.bmp", &textureParticle);
+//	if (FAILED(hr))
+//		cout << "erreur chargement texture" << endl;
+//
+//	/////////////////////////////
+//	// Creates particle system //
+//	/////////////////////////////
+////*
+//
+//	quadRenderer = DX11QuadRenderer::create(); // quad renderer
+//	quadRenderer->enableBlending(true);
+//	//quadRenderer->setBlendingFunctions(D3DBLEND_SRCALPHA, D3DBLEND_ONE);
+//	quadRenderer->setTexturingMode(TEXTURE_2D);
+//	quadRenderer->setTexture(textureParticle);
+//	//quadRenderer->setTextureBlending(D3DTOP_MODULATE);
+//	//quadRenderer->setScale(0.05f, 0.05f);
+//	quadRenderer->setScale(0.2f, 0.2f);
+//	//*/
+//
+//		// Model
+//	particleModel = Model::create(FLAG_RED | FLAG_SIZE | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA);
+//	particleModel->setParam(PARAM_ALPHA, 0.8f); // constant alpha
+//	particleModel->setLifeTime(8.0f, 8.0f);
+//	particleModel->setParam(PARAM_SIZE, 5.0, 10.0f);
+//
+//	// Emitter
+//	particleEmitter = SphericEmitter::create(Vector3D(0.0f, 1.0f, 0.0f), 0.1f * MATH_PI, 0.1f * MATH_PI);
+//	particleEmitter->setZone(Point::create(Vector3D(0.0f, 0.016f, 0.0f)));
+//	particleEmitter->setFlow(250);
+//	particleEmitter->setForce(1.5f, 1.5f);
+//
+//	// Modifier
+//	groundObstacle = Obstacle::create(Plane::create(), INTERSECT_ZONE, 0.6f, 1.0f);
+//
+//	// Group
+//	particleGroup = Group::create(particleModel, 2100);
+//	particleGroup->addEmitter(particleEmitter);
+//	particleGroup->addModifier(groundObstacle);
+//	particleGroup->setRenderer(quadRenderer);
+//	particleGroup->setGravity(Vector3D(0.0f, -0.8f, 0.0f));
+//
+//	// System
+//	particleSystem = System::create();
+//	particleSystem->addGroup(particleGroup);
 
-	ID3D11ShaderResourceView* textureParticle = NULL;
-	HRESULT hr = DirectX::CreateWICTextureFromFile(m_D3D->GetDevice(), L"res/point.bmp", NULL, &textureParticle);
-	//hr = D3DXCreateTextureFromFile(g_pD3DDevice, L"res/point.bmp", &textureParticle);
-	if (FAILED(hr))
-		cout << "erreur chargement texture" << endl;
-
-	/////////////////////////////
-	// Creates particle system //
-	/////////////////////////////
-//*
-
-	quadRenderer = DX11QuadRenderer::create(); // quad renderer
-	quadRenderer->enableBlending(true);
-	//quadRenderer->setBlendingFunctions(D3DBLEND_SRCALPHA, D3DBLEND_ONE);
-	quadRenderer->setTexturingMode(TEXTURE_2D);
-	quadRenderer->setTexture(textureParticle);
-	//quadRenderer->setTextureBlending(D3DTOP_MODULATE);
-	//quadRenderer->setScale(0.05f, 0.05f);
-	quadRenderer->setScale(0.2f, 0.2f);
-	//*/
-
-		// Model
-	particleModel = Model::create(FLAG_RED | FLAG_SIZE | FLAG_GREEN | FLAG_BLUE | FLAG_ALPHA);
-	particleModel->setParam(PARAM_ALPHA, 0.8f); // constant alpha
-	particleModel->setLifeTime(8.0f, 8.0f);
-	particleModel->setParam(PARAM_SIZE, 5.0, 10.0f);
-
-	// Emitter
-	particleEmitter = SphericEmitter::create(Vector3D(0.0f, 1.0f, 0.0f), 0.1f * MATH_PI, 0.1f * MATH_PI);
-	particleEmitter->setZone(Point::create(Vector3D(0.0f, 0.016f, 0.0f)));
-	particleEmitter->setFlow(250);
-	particleEmitter->setForce(1.5f, 1.5f);
-
-	// Modifier
-	groundObstacle = Obstacle::create(Plane::create(), INTERSECT_ZONE, 0.6f, 1.0f);
-
-	// Group
-	particleGroup = Group::create(particleModel, 2100);
-	particleGroup->addEmitter(particleEmitter);
-	particleGroup->addModifier(groundObstacle);
-	particleGroup->setRenderer(quadRenderer);
-	particleGroup->setGravity(Vector3D(0.0f, -0.8f, 0.0f));
-
-	// System
-	particleSystem = System::create();
-	particleSystem->addGroup(particleGroup);
+	exampleBase = new SPK_Example();
+	exampleBase->Init(this);
 
 	/////////////////////////////////////
 	// Traces SPARK registered objects //
@@ -318,17 +347,11 @@ void GraphicsClass::SPK_Init()
 
 void GraphicsClass::SPK_Move()
 {
-	if (particleSystem == NULL) return;
+	if (exampleBase == NULL) return;
 
 	float deltatime = 0.01f;
-	static float step = 0.0f;
-	step += 0.01f * 0.5f;
-	particleModel->setParam(PARAM_RED, 0.6f + 0.4f * sin(step));
-	particleModel->setParam(PARAM_GREEN, 0.6f + 0.4f * sin(step + MATH_PI * 2.0f / 3.0f));
-	particleModel->setParam(PARAM_BLUE, 0.6f + 0.4f * sin(step + MATH_PI * 4.0f / 3.0f));
-
-	// Updates particle system
-	particleSystem->update(deltatime);	// 1 defined as a second
+	
+	exampleBase->Update(deltatime);
 }
 
 void GraphicsClass::SPK_Release()

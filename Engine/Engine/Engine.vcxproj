@@ -88,6 +88,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particlesystemclass.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="SPK_Example.cpp" />
     <ClCompile Include="systemclass.cpp" />
     <ClCompile Include="textureclass.cpp" />
     <ClCompile Include="particleshaderclass.cpp" />
@@ -103,6 +104,8 @@
     <ClInclude Include="Misc.h" />
     <ClInclude Include="particlesystemclass.h" />
     <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="SPK_Example.h" />
+    <ClInclude Include="SPK_ExampleBase.h" />
     <ClInclude Include="systemclass.h" />
     <ClInclude Include="textureclass.h" />
     <ClInclude Include="particleshaderclass.h" />

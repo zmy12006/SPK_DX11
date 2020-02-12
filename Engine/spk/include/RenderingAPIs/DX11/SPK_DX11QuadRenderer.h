@@ -73,6 +73,13 @@ namespace DX11
 	//	D3DDECL_END()
 	//};
 
+	class DX11RenderShader
+	{
+	public:
+		virtual void SPKRender(int indexCount, DirectX::XMFLOAT4X4  worldMatrix, DirectX::XMFLOAT4X4  viewMatrix,
+			DirectX::XMFLOAT4X4 projectionMatrix, ID3D11ShaderResourceView* texture) {}
+	};
+
 	class SPK_DX11_PREFIX DX11QuadRenderer : public DX11Renderer, public QuadRendererInterface, public Oriented3DRendererInterface
 	{
 		SPK_IMPLEMENT_REGISTERABLE(DX11QuadRenderer)
@@ -115,7 +122,8 @@ namespace DX11
 		virtual bool DX11DestroyBuffers(const Group& group);
 
 		virtual void render(const Group& group);
-
+	public:
+		void SetRender(DX11RenderShader* rs) { mRenderShader = rs; }
 	protected:
 
 		virtual bool checkBuffers(const Group& group);
@@ -126,6 +134,8 @@ namespace DX11
 
 		mutable float modelView[16];
 		mutable float invModelView[16];
+
+		DX11RenderShader*	mRenderShader = NULL;
 
 		ID3D11ShaderResourceView* textureIndex;
 

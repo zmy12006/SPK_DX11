@@ -15,6 +15,8 @@
 #include "particleshaderclass.h"
 #include "particlesystemclass.h"
 
+#include "SPK_ExampleBase.h"
+
 #ifdef USE_SPARK
 // SPARK lib
 #include <SPK.h>
@@ -35,10 +37,11 @@ const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 0.1f;
 
 
+
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: GraphicsClass
 ////////////////////////////////////////////////////////////////////////////////
-class GraphicsClass
+class GraphicsClass : public DX11RenderShader
 {
 public:
 	GraphicsClass();
@@ -51,6 +54,8 @@ public:
 
 private:
 	bool Render();
+	void SPKRender(int indexCount, DirectX::XMFLOAT4X4  worldMatrix1, DirectX::XMFLOAT4X4  viewMatrix1,
+		DirectX::XMFLOAT4X4 projectionMatrix1, ID3D11ShaderResourceView* texture);
 
 #ifdef USE_SPARK
 	void SPK_Init();
@@ -65,16 +70,18 @@ private:
 	ParticleSystemClass* m_ParticleSystem;
 
 #ifdef USE_SPARK
-	SPK::System* particleSystem = NULL;
-	SPK::Group* particleGroup = NULL;
-	SPK::Model* particleModel = NULL;
+	//SPK::System* particleSystem = NULL;
+	//SPK::Group* particleGroup = NULL;
+	//SPK::Model* particleModel = NULL;
 
-	//*
-	SPK::DX11::DX11QuadRenderer* quadRenderer = NULL;
-	//*/
+	////*
+	//SPK::DX11::DX11QuadRenderer* quadRenderer = NULL;
+	////*/
 
-	SPK::SphericEmitter *particleEmitter = NULL;
-	SPK::Obstacle* groundObstacle = NULL;
+	//SPK::SphericEmitter *particleEmitter = NULL;
+	//SPK::Obstacle* groundObstacle = NULL;
+
+	SPK_ExampleBase* exampleBase = NULL;
 #endif // USE_SPARK
 };
 

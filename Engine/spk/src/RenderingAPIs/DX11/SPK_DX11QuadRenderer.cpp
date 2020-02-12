@@ -349,6 +349,10 @@ namespace DX11
 			DX11Info::getContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
+		if (mRenderShader != NULL)
+		{
+			mRenderShader->SPKRender(6 * group.getNbParticles(), DX11Info::MatWorld, DX11Info::MatView, DX11Info::MatProj, getTexture());
+		}
 		
 		//// bind buffers and draw
 		//{
