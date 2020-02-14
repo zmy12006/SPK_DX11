@@ -7,6 +7,7 @@
 #include "graphicsclass.h"
 
 #include "SPK_Example.h"
+#include "SPK_ExampleExp.h"
 
 //#define Math_PI 3.1415926f
 
@@ -334,7 +335,7 @@ void GraphicsClass::SPK_Init()
 //	particleSystem = System::create();
 //	particleSystem->addGroup(particleGroup);
 
-	exampleBase = new SPK_Example();
+	exampleBase = new SPK_ExampleExp();
 	exampleBase->Init(this);
 
 	/////////////////////////////////////

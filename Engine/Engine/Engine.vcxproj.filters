@@ -63,6 +63,9 @@
     <ClCompile Include="SPK_Example.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SPK_ExampleExp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cameraclass.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SPK_ExampleBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SPK_ExampleExp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
